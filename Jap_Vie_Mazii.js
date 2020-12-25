@@ -52,7 +52,7 @@ class javi_Mazii {
         //}
         let css = this.renderCSS();
         //return definition ? css + definition : null;
-        return contents;
+        return doc;
     }
 
     renderCSS() {
