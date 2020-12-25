@@ -20,7 +20,7 @@ class javi_Mazii {
 
     async findTerm(word) {
         this.word = word;
-        return await this.findCambridge(word);
+        return await this.findMazii(word);
     }
 
     removeTags(elem, name) {
@@ -47,11 +47,11 @@ class javi_Mazii {
         });
     }
 
-    async findCambridge(word) {
+    async findMazii(word) {
         if (!word) return null;
 
         let base = 'https://mazii.net/search?dict=javi&type=w&query=';
-        let url = base + encodeURI(word);
+        let url = base + encodeURI(word)+'&hl=en-US';
         let doc = '';
         try {
             let data = await api.fetch(url);
@@ -61,21 +61,22 @@ class javi_Mazii {
             return null;
         }
 
-        let contents = doc.querySelectorAll('.pr .dictionary') || [];
+        let contents = doc.querySelectorAll('.word-container .widget-container') || [];
         if (contents.length == 0) return null;
 
         let definition = '';
-        for (const content of contents) {
-            this.removeTags(content, '.extraexamps');
-            this.removeTags(content, '.definition-src');
-            this.removeTags(content, 'h2');
-            this.removeTags(content, '.d_br');
-            this.removeTags(content, '.freq.dfreq');
-            this.removelinks(content);
-            definition += content.innerHTML;
-        }
+        //for (const content of contents) {
+            //this.removeTags(content, '.extraexamps');
+            //this.removeTags(content, '.definition-src');
+            //this.removeTags(content, 'h2');
+            //this.removeTags(content, '.d_br');
+            //this.removeTags(content, '.freq.dfreq');
+            //this.removelinks(content);
+            //definition += content.innerHTML;
+        //}
         let css = this.renderCSS();
-        return definition ? css + definition : null;
+        //return definition ? css + definition : null;
+        return contents ? css + contents : null;
     }
 
     renderCSS() {
