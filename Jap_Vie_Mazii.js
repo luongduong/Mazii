@@ -43,7 +43,7 @@ class japvie_Mazii {
         let contents = doc.querySelectorAll('.word-container .widget-container') || [];
         if (contents.length == 0) return null;
 
-        let definitions = '';
+        let definition = '';
         for (const content of contents) {
             definition += content.innerHTML;
         }
