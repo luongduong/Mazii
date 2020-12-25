@@ -1,5 +1,5 @@
 /* global api */
-class jap_vie_Mazii {
+class envi_Cambridge {
     constructor(options) {
         this.options = options;
         this.maxexample = 2;
@@ -10,7 +10,7 @@ class jap_vie_Mazii {
         let locale = await api.locale();
         if (locale.indexOf('CN') != -1) return '剑桥英法词典';
         if (locale.indexOf('TW') != -1) return '剑桥英法词典';
-        return 'Mazii Dictionary Jap Vie';
+        return 'Cambridge EN->VI Dictionary';
     }
 
     setOptions(options) {
@@ -20,7 +20,7 @@ class jap_vie_Mazii {
 
     async findTerm(word) {
         this.word = word;
-        return await this.findMazii(word);
+        return await this.findCambridge(word);
     }
 
     removeTags(elem, name) {
@@ -47,11 +47,11 @@ class jap_vie_Mazii {
         });
     }
 
-    async findMazii(word) {
+    async findCambridge(word) {
         if (!word) return null;
 
-        let base = 'https://mazii.net/search?dict=javi&type=w&query=;
-        let url = base + encodeURIComponent(word)+&hl=en-US';;
+        let base = 'https://mazii.net/search?dict=javi&type=w&query=';
+        let url = base + encodeURIComponent(word)+'&hl=en-US';
         let doc = '';
         try {
             let data = await api.fetch(url);
