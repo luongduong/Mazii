@@ -23,35 +23,11 @@ class javi_Mazii {
         return await this.findMazii(word);
     }
 
-    removeTags(elem, name) {
-        let tags = elem.querySelectorAll(name);
-        tags.forEach(x => {
-            x.outerHTML = '';
-        });
-    }
-
-    removelinks(elem) {
-        let tags = elem.querySelectorAll('a');
-        tags.forEach(x => {
-            x.outerHTML = x.innerText;
-        });
-
-        tags = elem.querySelectorAll('h2');
-        tags.forEach(x => {
-            x.outerHTML = `<div class='head2'>${x.innerHTML}</div>`;
-        });
-
-        tags = elem.querySelectorAll('h3');
-        tags.forEach(x => {
-            x.outerHTML = `<div class='head3'>${x.innerHTML}</div>`;
-        });
-    }
-
     async findMazii(word) {
         if (!word) return null;
 
         let base = 'https://mazii.net/search?dict=javi&type=w&query=';
-        let url = base + encodeURI(word)+'&hl=en-US';
+        let url = base + encodeURIComponent(word) + '&hl=en-US';
         let doc = '';
         try {
             let data = await api.fetch(url);
@@ -62,7 +38,7 @@ class javi_Mazii {
         }
 
         let contents = doc.querySelectorAll('.word-container .widget-container') || [];
-        if (contents.length == 0) return null;
+        //if (contents.length == 0) return null;
 
         let definition = '';
         //for (const content of contents) {
@@ -76,7 +52,7 @@ class javi_Mazii {
         //}
         let css = this.renderCSS();
         //return definition ? css + definition : null;
-        return contents ? css + contents : null;
+        return contents;
     }
 
     renderCSS() {
