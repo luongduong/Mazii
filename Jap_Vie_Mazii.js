@@ -10,7 +10,7 @@ class japvie_Jdict {
         let locale = await api.locale();
         if (locale.indexOf('CN') != -1) return '意汉词典';
         if (locale.indexOf('TW') != -1) return '意汉词典';
-        return 'Jdict dict';
+        return 'Jdict dict_1';
     }
 
 
@@ -31,7 +31,7 @@ class japvie_Jdict {
         if (!word) return notes; // return empty notes
 
         let base = 'https://jdict.net/search?keyword=';
-        let url = base + encodeURIComponent(word) + '&type=word';
+        let url = base + word + '&type=word';
         let doc = '';
         try {
             let data = await api.fetch(url);
