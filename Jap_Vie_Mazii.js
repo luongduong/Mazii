@@ -41,7 +41,7 @@ class japvie_Mazii {
             return [];
         }
 
-        let definitions = [doc.innerHTML];
+        let definitions = [doc.body.innerHTML];
         let css = this.renderCSS();
         notes.push({
             css,
