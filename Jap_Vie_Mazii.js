@@ -31,7 +31,7 @@ class japvie_Mazii {
         if (!word) return notes; // return empty notes
 
         let base = 'https://mazii.net/search?dict=javi&type=w&query=';
-        let url = base + encodeURIComponent(word) + '&hl=vi-VN';
+        let url = base + encodeURIComponent(word) + '&hl=en-US';
         let doc = '';
         try {
             let data = await api.fetch(url);
