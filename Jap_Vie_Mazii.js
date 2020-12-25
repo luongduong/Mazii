@@ -1,5 +1,5 @@
 /* global api */
-class japvie_Mazii {
+class japvie_Jdict {
     constructor(options) {
         this.options = options;
         this.maxexample = 2;
@@ -10,7 +10,7 @@ class japvie_Mazii {
         let locale = await api.locale();
         if (locale.indexOf('CN') != -1) return '意汉词典';
         if (locale.indexOf('TW') != -1) return '意汉词典';
-        return 'Mazii_dict_11';
+        return 'Jdict dict';
     }
 
 
@@ -22,16 +22,16 @@ class japvie_Mazii {
     async findTerm(word) {
         this.word = word;
         //let deflection = api.deinflect(word);
-        let results = await this.findMazii(word);
+        let results = await this.findJdict(word);
         return results;
     }
 
-    async findMazii(word) {
+    async findJdict(word) {
         let notes = [];
         if (!word) return notes; // return empty notes
 
-        let base = 'https://mazii.net/search?dict=javi&type=w&query=';
-        let url = base + encodeURIComponent(word) + '&hl=vi-VN';
+        let base = 'https://jdict.net/search?keyword=';
+        let url = base + encodeURIComponent(word) + '&type=word';
         let doc = '';
         try {
             let data = await api.fetch(url);
@@ -40,17 +40,12 @@ class japvie_Mazii {
         } catch (err) {
             return [];
         }
-    
 
-        let definition = '';
-        definition = [doc.body.innerHTML];
-       
+        let definitions = [doc.body.innerHTML];
         let css = this.renderCSS();
-        //return definition ? css + definition : null;
-        //let css = this.renderCSS();
         notes.push({
             css,
-            definition,
+            definitions,
         });
         return notes;
     }
