@@ -31,7 +31,7 @@ class envi_Cambridge {
     }
 
     let base =
-      "https://dictionary.cambridge.org/dictionary/english-vietnamese/";
+      "https://dictionary.cambridge.org/search/english-vietnamese/direct/?q=";
     let audioUrl = "https://dict.laban.vn/ajax/getsound?accent=us&word=" + word;
     let url = base + word;
 
