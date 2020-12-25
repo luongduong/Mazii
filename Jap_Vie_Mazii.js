@@ -1,5 +1,5 @@
 /* global api */
-class javi_Mazii {
+class itcn_Dict {
     constructor(options) {
         this.options = options;
         this.maxexample = 2;
@@ -8,10 +8,11 @@ class javi_Mazii {
 
     async displayName() {
         let locale = await api.locale();
-        if (locale.indexOf('CN') != -1) return '剑桥英法词典';
-        if (locale.indexOf('TW') != -1) return '剑桥英法词典';
-        return 'Mazii dictionary Jap Vie';
+        if (locale.indexOf('CN') != -1) return '意汉词典';
+        if (locale.indexOf('TW') != -1) return '意汉词典';
+        return 'Mazii dict';
     }
+
 
     setOptions(options) {
         this.options = options;
@@ -20,11 +21,14 @@ class javi_Mazii {
 
     async findTerm(word) {
         this.word = word;
-        return await this.findMazii(word);
+        //let deflection = api.deinflect(word);
+        let results = await this.findMazii(word);
+        return results;
     }
 
     async findMazii(word) {
-        if (!word) return null;
+        let notes = [];
+        if (!word) return notes; // return empty notes
 
         let base = 'https://mazii.net/search?dict=javi&type=w&query=';
         let url = base + encodeURIComponent(word) + '&hl=en-US';
@@ -34,51 +38,21 @@ class javi_Mazii {
             let parser = new DOMParser();
             doc = parser.parseFromString(data, 'text/html');
         } catch (err) {
-            return null;
+            return [];
         }
 
-        let contents = doc.querySelectorAll('.word-container .widget-container') || [];
-        //if (contents.length == 0) return null;
-
-        let definition = '';
-        //for (const content of contents) {
-            //this.removeTags(content, '.extraexamps');
-            //this.removeTags(content, '.definition-src');
-            //this.removeTags(content, 'h2');
-            //this.removeTags(content, '.d_br');
-            //this.removeTags(content, '.freq.dfreq');
-            //this.removelinks(content);
-            //definition += content.innerHTML;
-        //}
+        let definitions = [doc.body.innerHTML];
         let css = this.renderCSS();
-        //return definition ? css + definition : null;
-        return doc;
+        notes.push({
+            css,
+            definitions,
+        });
+        return notes;
     }
 
-    renderCSS() {
-        let css = `
-            <style>
-            .entry-body__el{margin-bottom:10px;}
-            .head2{font-size: 1.2em;font-weight:bold;}
-            .pos-header{border-bottom: 1px solid;}
-            .head3 {display:none;}
-            .posgram {font-size: 0.8em;background-color: #959595;color: white;padding: 2px 5px;border-radius: 3px;}
-            .epp-xref::after {content: ")";}
-            .epp-xref::before {content: "(";}
-            .def-block, .phrase-block {
-                /*border: 1px solid;*/
-                /*border-color: #e5e6e9 #dfe0e4 #d0d1d5;*/
-                border-radius: 3px;
-                padding: 5px;
-                margin: 5px 0;
-                background-color: #f6f6f6;
-            }
-            .phrase-block .def-block{border: initial;padding: initial;}
-            p.def-head {margin: auto;}
-            .phrase-head {vertical-align: middle;color: #1683ea;font-weight: bold;}
-            .trans {color: #5079bb;}
-            </style>`;
 
+    renderCSS() {
+        let css = '<style>A:link{TEXT-DECORATION:none}A:visited{TEXT-DECORATION:none}A:active{TEXT-DECORATION:none}A:hover{TEXT-DECORATION:none}p.PRM{text-align:left;margin:0 0 0 0}p.SCD{text-align:left;margin:0 0 0 16px}p.TRZ{text-align:left;margin:0 0 0 24px}BIAOHAO{font-size:15px;font-weight:700;color:red}XUHAO{font-size:12px;font-weight:700;color:green}SHILI,MAOHAO{font-size:12px;font-weight:400;font-style:normal;color:green}SLTRZ{font-size:12px;font-weight:400;font-style:normal;color:teal}BOLANG{font-size:12px;font-weight:700;background-color:#FFC;color:red}SY{font-size:12px;font-weight:400;font-style:normal;color:black}IT{font-size:12px;font-weight:400;font-style:normal;color:darkblue}CN{font-size:12px;font-weight:400;font-style:normal;color:black}CNNO{font-size:0;font-weight:400;font-style:normal;color:white}ITCS{font-size:12px;font-weight:700;font-style:normal;color:darkblue}CNCS{font-size:12px;font-weight:400;font-style:normal;color:black}CNCSNO{font-size:0;font-weight:400;font-style:normal;color:white}ITTRZ{font-size:12px;font-weight:400;font-style:normal;color:teal}CNTRZ{font-size:11px;font-weight:400;font-style:normal;color:black}CNTRZNO{font-size:0;font-weight:400;font-style:normal;color:white}YANIT{font-size:12px;font-weight:700;font-style:italic;color:darkblue}YANCN{font-size:12px;font-weight:400;font-style:normal;color:black}YANCNNO{font-size:0;font-weight:400;font-style:normal;color:white}XSCT{font-size:15px;font-weight:700;font-style:normal;color:#0B0B3B}CIXING{text-transform:lowercase;font-size:12px;font-weight:700;font-style:italic;color:red}AUSIL{text-transform:lowercase;font-size:12px;font-weight:700;font-style:normal;color:green}PL{font-size:12px;font-weight:700;font-style:normal;color:green}HUOZ{font-size:12px;font-weight:700;font-style:normal;color:#424242}BW{font-size:12px;font-weight:700;font-style:normal;color:#0B0B3B}BWT{font-size:12px;font-weight:700;font-style:normal;color:#0B0B3B}LINGUA{font-size:13px;font-weight:700;color:#61210B}ABBREV{font-size:13px;font-weight:700;color:#61210B}DXX{font-size:12px;font-weight:700;color:#61210B}QITA{font-size:12px;font-weight:700;color:#61210B}</style>';
         return css;
     }
 }
