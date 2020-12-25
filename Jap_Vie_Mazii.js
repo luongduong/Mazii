@@ -51,7 +51,7 @@ class javi_Mazii {
         if (!word) return null;
 
         let base = 'https://mazii.net/search?dict=javi&type=w&query=';
-        let url = base + encodeURIComponent(word)+'&hl=en-US';
+        let url = base + encodeURI(word);
         let doc = '';
         try {
             let data = await api.fetch(url);
