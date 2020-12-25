@@ -10,7 +10,7 @@ class japvie_Mazii {
         let locale = await api.locale();
         if (locale.indexOf('CN') != -1) return '意汉词典';
         if (locale.indexOf('TW') != -1) return '意汉词典';
-        return 'Mazii_dict_5';
+        return 'Mazii_dict_6';
     }
 
 
@@ -40,7 +40,7 @@ class japvie_Mazii {
         } catch (err) {
             return null;
         }
-        let contents = doc.querySelectorAll('.word-container .widget-container') || [];
+        let contents = doc.querySelectorAll('.mean-detail-range') || [];
         if (contents.length == 0) return null;
 
         let definition = '';
