@@ -1,5 +1,5 @@
 /* global api */
-class envi_Cambridge {
+class javi_Mazii {
     constructor(options) {
         this.options = options;
         this.maxexample = 2;
@@ -10,7 +10,7 @@ class envi_Cambridge {
         let locale = await api.locale();
         if (locale.indexOf('CN') != -1) return '剑桥英法词典';
         if (locale.indexOf('TW') != -1) return '剑桥英法词典';
-        return 'Cambridge EN->VI Dictionary';
+        return 'Mazii dictionary Jap Vie';
     }
 
     setOptions(options) {
