@@ -10,7 +10,7 @@ class japvie_Mazii {
         let locale = await api.locale();
         if (locale.indexOf('CN') != -1) return '意汉词典';
         if (locale.indexOf('TW') != -1) return '意汉词典';
-        return 'Mazii_dict_7';
+        return 'Mazii_dict_6';
     }
 
 
