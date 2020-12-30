@@ -66,13 +66,8 @@ class jpvi_Mazii {
             //let hanviet = this.getHanviet(jsonData.kanjis, word);
             let exampleHtml = this.getExample(jsonData.data[0].mean[1].examples);
 
-            let htmlData = `
-            <div class="box-main-word">
-                <p>
-                    <span class="mean-fr-word cl-blue">◆ ${jsonData.data[0].mean[1].examples[0].mean}</span>
-                </p>
-        `;
-            htmlData += exampleHtml + '</div>';
+
+            let htmlData = exampleHtml;
 
             let parser = new DOMParser();
             doc = parser.parseFromString(htmlData, 'text/html');
@@ -80,12 +75,11 @@ class jpvi_Mazii {
             return [];
         }
 
-        let jbjs = doc.querySelector('.box-main-word') || '';
         let definition = '';
-        if (jbjs) {
-            definition += jbjs.innerHTML;
-            let css = this.renderCSS();
-            return definition ? css + definition : definition;
+   
+        definition = doc.body.innerHTML;
+        let css = this.renderCSS();
+        return definition ? css + definition : definition;
             
         } else {
             return [];
