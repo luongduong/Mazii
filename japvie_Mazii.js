@@ -1,5 +1,5 @@
 /* global api */
-class jpvi_Jdict {
+class jpvi_Mazii {
     constructor(options) {
         this.options = options;
         this.maxexample = 2;
@@ -7,7 +7,7 @@ class jpvi_Jdict {
     }
 
     async displayName() {
-        return 'jpvi Jdict Dictionary';
+        return 'JPVI Mazii Dict';
     }
 
 
@@ -19,7 +19,7 @@ class jpvi_Jdict {
     async findTerm(word) {
         this.word = word;
         //let deflection = api.deinflect(word);
-        let results = await this.findJdict(word);
+        let results = await this.findMazii(word);
         return results;
     }
 
@@ -59,33 +59,31 @@ class jpvi_Jdict {
         return html;
     }
 
-    async findJdict(word) {
+    async findMazii(word) {
         let notes = [];
         if (!word || word.length > 5) return notes; // return empty notes
 
-        let baseSlug = "https://jdict.net/api/v1/search?keyword=" + encodeURIComponent(word) +
-            "&keyword_position=start&page=1&type=word";
-        let dataSlug = await fetch(baseSlug);
-        let jsonSlug = await dataSlug.json();
-        let keyword = jsonSlug.list[0].slug;
+        //let baseSlug = "https://jdict.net/api/v1/search?keyword=" + encodeURIComponent(word) +
+            //"&keyword_position=start&page=1&type=word";
+        //let dataSlug = await fetch(baseSlug);
+        //let jsonSlug = await dataSlug.json();
+        //let keyword = jsonSlug.list[0].slug;
 
-        let base = "https://jdict.net/api/v1/words/";
-        let url = base + encodeURIComponent(keyword) + "?get_relate=1"
+        let base = "https://mazii.net/api/search/";
+        let url = base + encodeURIComponent(keyword) + "/10/1";
       
         let doc = '';
         try {
             let response = await fetch(url);
             let jsonData = await response.json();
 
-            let hanviet = this.getHanviet(jsonData.kanjis, word);
-            let exampleHtml = this.getExample(jsonData.examples);
+            //let hanviet = this.getHanviet(jsonData.kanjis, word);
+            let exampleHtml = this.getExample(jsonData.data[0].mean[1].examples[0].content);
 
             let htmlData = `
             <div class="box-main-word">
                 <p>
-                    <span class="main-word cl-red-main">${jsonData.word}</span>
-                    <span class="mean-fr-word romaji">${jsonData.kana} (${hanviet})</span>
-                    <span class="mean-fr-word cl-blue">◆ ${jsonData.suggest_mean}</span>
+                    <span class="mean-fr-word cl-blue">◆ ${jsonData.data[0].mean[1].examples[0].mean}</span>
                 </p>
         `;
             htmlData += exampleHtml + '</div>';
