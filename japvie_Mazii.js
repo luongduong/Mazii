@@ -78,7 +78,7 @@ class jpvi_Mazii {
             let jsonData = await response.json();
 
             //let hanviet = this.getHanviet(jsonData.kanjis, word);
-            let exampleHtml = this.getExample(jsonData.data[0].mean[1].examples[0].content);
+            let exampleHtml = this.getExample(jsonData.data[0].mean[1].examples);
 
             let htmlData = `
             <div class="box-main-word">
