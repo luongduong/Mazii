@@ -77,9 +77,9 @@ class jpvi_Mazii {
 
         let definition = '';
    
-        definition = doc.body.innerHTML;
+        definition = doc.innerHTML;
         let css = this.renderCSS();
-        return definition ? css + definition : definition;
+        return definition ? css + definition : null;
             
         } else {
             return [];
