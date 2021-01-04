@@ -1,4 +1,4 @@
-/* global api */
+/* global api fix audio*/
 class jpvi_Jdict {
     constructor(options) {
         this.options = options;
@@ -7,7 +7,7 @@ class jpvi_Jdict {
     }
 
     async displayName() {
-        return 'jpvi Jdict Dictionary';
+        return 'Jdict JV Dictionary';
     }
 
 
@@ -46,7 +46,7 @@ class jpvi_Jdict {
 
     getExample(examples) {
         let html = '<p class="mean-fr-word line_break"></p>';
-        let total = examples.length > 3 ? 3 : examples.length;
+        let total = examples.length ;
         for (let index = 0; index < total; index++) {
             const element = examples[index];
             html += `
@@ -57,6 +57,37 @@ class jpvi_Jdict {
             `;
         }
         return html;
+    }
+    
+    convertJptoHex(jp) {
+        if (jp == null || jp == "") {
+            return "";
+        }
+
+        if (jp.indexOf('ã€Œ') != -1) {
+            jp = jp.replace(new RegExp('ã€Œ', 'g'), '');
+            jp = jp.replace(new RegExp('ã€', 'g'), ''); 
+        }
+
+        jp = jp.trim();
+        var result = '';
+
+        for (var i = 0; i < jp.length; i++) {
+            result += ("0000" + jp.charCodeAt(i).toString(16)).substr(-4);
+            if (i != jp.length - 1) {
+                result += "_";
+            }
+        }
+
+        return result;
+    }
+
+    generateLinkAudio(text) {
+
+        var baseAudioUrl = "https://data.mazii.net/audios/";
+        var audioUrl = baseAudioUrl + this.convertJptoHex(text).toUpperCase() + ".mp3";
+        
+        return audioUrl;
     }
 
     async findJdict(word) {
@@ -73,8 +104,12 @@ class jpvi_Jdict {
         let url = base + encodeURIComponent(keyword) + "?get_relate=1"
       
         let doc = '';
+        var audio ='';
+        
         try {
             let response = await fetch(url);
+            audio = this.generateLinkAudio(word);
+            
             let jsonData = await response.json();
 
             let hanviet = this.getHanviet(jsonData.kanjis, word);
@@ -87,23 +122,29 @@ class jpvi_Jdict {
                     <span class="mean-fr-word romaji">${jsonData.kana} (${hanviet})</span>
                     <span class="mean-fr-word cl-blue">◆ ${jsonData.suggest_mean}</span>
                 </p>
-        `;
-            htmlData += exampleHtml + '</div>';
-
+            `;
+            htmlData += exampleHtml + '</div>';            
             let parser = new DOMParser();
             doc = parser.parseFromString(htmlData, 'text/html');
-        } catch (err) {
-            return [];
-        }
+        
 
-        let jbjs = doc.querySelector('.box-main-word') || '';
-        let definition = '';
-        if (jbjs) {
-            definition += jbjs.innerHTML;
-            let css = this.renderCSS();
-            return definition ? css + definition : definition;
+            let jbjs = doc.querySelector('.box-main-word') || '';
+            let definition = '';
+            let definitions = [];
+            let audios = [];
+
+            if (jbjs) {
+                definition += jbjs.innerHTML;
+                let css = this.renderCSS();
+
+                definitions.push(definition);
+                audios.push(audio);
+                notes.push({ css, definitions,audios });
+            }      
             
-        } else {
+            return notes;
+        }
+        catch (error) {
             return [];
         }
 
