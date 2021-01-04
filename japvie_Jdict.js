@@ -46,7 +46,7 @@ class jpvi_Jdict {
 
     getExample(examples) {
         let html = '<p class="mean-fr-word line_break"></p>';
-        let total = examples.length ;
+        let total = examples.length > 3 ? 3 : examples.length ;
         for (let index = 0; index < total; index++) {
             const element = examples[index];
             html += `
