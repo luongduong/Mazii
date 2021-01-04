@@ -1,4 +1,4 @@
-/* global api fix audio */
+/* global api fix audio aa*/
 class jpvi_Jdict {
     constructor(options) {
         this.options = options;
