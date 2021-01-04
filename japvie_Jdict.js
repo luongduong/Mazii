@@ -92,7 +92,7 @@ class jpvi_Jdict {
 
     async findJdict(word) {
         let notes = [];
-        //if (!word || word.length > 5) return notes; // return empty notes
+        if (!word || word.length > 5) return notes; // return empty notes
 
         let baseSlug = "https://jdict.net/api/v1/search?keyword=" + encodeURIComponent(word) +
             "&keyword_position=start&page=1&type=word";
@@ -134,20 +134,20 @@ class jpvi_Jdict {
         let definition = '';
         if (jbjs) {
             definition += jbjs.innerHTML;
-            //let css = this.renderCSS();
-            //return definition ? css + definition : definition;
+            let css = this.renderCSS();
+            return definition ? css + definition : definition;
             
         } else {
             return [];
         }
         
-        let css = this.renderCSS();
-        notes.push({
-            css,
-            definition,
-            audios
-        });
-        return notes;
+//         let css = this.renderCSS();
+//         notes.push({
+//             css,
+//             definition,
+//             audios
+//         });
+//         return notes;
 
     }
 
