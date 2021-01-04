@@ -85,7 +85,7 @@ class jpvi_Jdict {
     generateLinkAudio(text) {
 
         var baseAudioUrl = "https://data.mazii.net/audios/";
-        var audioUrl = baseAudioUrl + convertJptoHex(text).toUpperCase() + ".mp3";
+        var audioUrl = baseAudioUrl + this.convertJptoHex(text).toUpperCase() + ".mp3";
         
         return audioUrl;
     }
