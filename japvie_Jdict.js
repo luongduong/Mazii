@@ -108,7 +108,7 @@ class jpvi_Jdict {
         
         try {
             let response = await fetch(url);
-            audios = generateLinkAudio(word);
+            audios = this.generateLinkAudio(word);
             
             let jsonData = await response.json();
 
