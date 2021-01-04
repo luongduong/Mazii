@@ -7,7 +7,7 @@ class jpvi_Jdict {
     }
 
     async displayName() {
-        return 'jpvi Jdict Dictionary';
+        return 'Jdict JV Dictionary';
     }
 
 
@@ -58,6 +58,37 @@ class jpvi_Jdict {
         }
         return html;
     }
+    
+    convertJptoHex = function (jp) {
+        if (jp == null || jp == "") {
+            return "";
+        }
+
+        if (jp.indexOf('ã€Œ') != -1) {
+            jp = jp.replace(new RegExp('ã€Œ', 'g'), '');
+            jp = jp.replace(new RegExp('ã€', 'g'), ''); 
+        }
+
+        jp = jp.trim();
+        var result = '';
+
+        for (var i = 0; i < jp.length; i++) {
+            result += ("0000" + jp.charCodeAt(i).toString(16)).substr(-4);
+            if (i != jp.length - 1) {
+                result += "_";
+            }
+        }
+
+        return result;
+    }
+
+    function generateLinkAudio(text) {
+
+        var baseAudioUrl = "https://data.mazii.net/audios/";
+        var audioUrl = baseAudioUrl + convertJptoHex(text).toUpperCase() + ".mp3";
+        
+        return audioUrl;
+    }
 
     async findJdict(word) {
         let notes = [];
@@ -73,8 +104,12 @@ class jpvi_Jdict {
         let url = base + encodeURIComponent(keyword) + "?get_relate=1"
       
         let doc = '';
+        let audios ='';
+        
         try {
             let response = await fetch(url);
+            let audios = generateLinkAudio(word);
+            
             let jsonData = await response.json();
 
             let hanviet = this.getHanviet(jsonData.kanjis, word);
@@ -88,8 +123,7 @@ class jpvi_Jdict {
                     <span class="mean-fr-word cl-blue">◆ ${jsonData.suggest_mean}</span>
                 </p>
         `;
-            htmlData += exampleHtml + '</div>';
-
+            htmlData += exampleHtml + '</div>';            
             let parser = new DOMParser();
             doc = parser.parseFromString(htmlData, 'text/html');
         } catch (err) {
@@ -100,12 +134,20 @@ class jpvi_Jdict {
         let definition = '';
         if (jbjs) {
             definition += jbjs.innerHTML;
-            let css = this.renderCSS();
-            return definition ? css + definition : definition;
+            //let css = this.renderCSS();
+            //return definition ? css + definition : definition;
             
         } else {
             return [];
         }
+        
+        let css = this.renderCSS();
+        notes.push({
+            css,
+            definition,
+            audios
+        });
+        return notes;
 
     }
 
