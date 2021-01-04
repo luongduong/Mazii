@@ -59,7 +59,7 @@ class jpvi_Jdict {
         return html;
     }
     
-    convertJptoHex = function (jp) {
+    convertJptoHex(jp) {
         if (jp == null || jp == "") {
             return "";
         }
@@ -82,7 +82,7 @@ class jpvi_Jdict {
         return result;
     }
 
-    function generateLinkAudio(text) {
+    generateLinkAudio(text) {
 
         var baseAudioUrl = "https://data.mazii.net/audios/";
         var audioUrl = baseAudioUrl + convertJptoHex(text).toUpperCase() + ".mp3";
