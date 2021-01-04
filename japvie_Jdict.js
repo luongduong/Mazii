@@ -92,7 +92,7 @@ class jpvi_Jdict {
 
     async findJdict(word) {
         let notes = [];
-        if (!word || word.length > 5) return notes; // return empty notes
+        //if (!word || word.length > 5) return notes; // return empty notes
 
         let baseSlug = "https://jdict.net/api/v1/search?keyword=" + encodeURIComponent(word) +
             "&keyword_position=start&page=1&type=word";
