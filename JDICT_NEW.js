@@ -93,15 +93,27 @@ class jpvi_Jdict {
     async findJdict(word) {
         let notes = [];
         if (!word || word.length > 5) return notes; // return empty notes
-
-        let baseSlug = "https://jdict.net/api/v1/search?keyword=" + encodeURIComponent(word) +
+        //old API address
+        //let baseSlug = "https://jdict.net/api/v1/search?keyword=" + encodeURIComponent(word) +
+            //"&keyword_position=start&page=1&type=word";
+        
+        //new API address
+        //https://api.jdict.net/api/v1/search?keyword=%E5%B8%B0%E5%8C%96&keyword_position=start&page=1&type=word
+        let baseSlug = "https://api.jdict.net/api/v1/search?keyword=" + encodeURIComponent(word) +
             "&keyword_position=start&page=1&type=word";
+        //https://api.jdict.net/api/v1/search?keyword=%E5%B8%B0%E5%8C%96&keyword_position=start&page=1&type=word
+
+
         let dataSlug = await fetch(baseSlug);
         let jsonSlug = await dataSlug.json();
         let keyword = jsonSlug.list[0].slug;
 
-        let base = "https://jdict.net/api/v1/words/";
-        let url = base + encodeURIComponent(keyword) + "?get_relate=1"
+        //let base = "https://jdict.net/api/v1/words/";
+        //new URL
+        //https://api.jdict.net/api/v1/words/%E5%B8%B0%E5%8C%96-20936?get_relate=0
+
+        let base = "https://api.jdict.net/api/v1/words/";
+        let url = base + encodeURIComponent(keyword) + "?get_relate=0"
       
         let doc = '';
         var audio ='';
